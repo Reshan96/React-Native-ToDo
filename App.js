@@ -5,7 +5,9 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
+import AddTodo from "./Components/addTodo";
 import Header from "./Components/header";
 import TodoItem from "./Components/todoItems";
 
@@ -25,10 +27,27 @@ export default function App() {
     })
   };
 
+  const onAddTodo = (text)=>{
+    if (text.length > 3){
+setTodos((prevTodos)=>{
+      return[
+        ...prevTodos,
+        {name:text, key:Math.random(100).toString()}
+      ]
+    })
+    } else{
+      Alert.alert("Oops!", "Longer 3 chars",[
+        {text:"Understood", onPress:()=> console.log("Closed")}
+      ])
+    }
+    
+  }
+
   return (
     <View style={styles.container}>
       <Header/>
      <View style={styles.content}>
+       <AddTodo submitItem={onAddTodo}/>
 <View style={styles.list}>
  <FlatList
         // numColumns={2}
