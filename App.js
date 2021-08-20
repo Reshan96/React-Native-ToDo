@@ -1,68 +1,47 @@
 import React, { useState } from "react";
 import {
-  Button,
   StyleSheet,
   Text,
-  TextInput,
   View,
   FlatList,
-  ScrollView,
-  TouchableHighlight,
   TouchableOpacity,
 } from "react-native";
+import Header from "./Components/header";
+import TodoItem from "./Components/todoItems";
 
 export default function App() {
+
   const [name, setName] = useState("Nethmi");
   const [user2, setUser] = useState("Nethmi");
-  const [circle, setCircle] = useState([
-    { name: "Nethmi", id: "001" },
-    { name: "Reshan", id: "002" },
-    { name: "Hasintha", id: "003" },
-    { name: "Thilini", id: "004" },
-    { name: "Kasuni", id: "005" },
-    { name: "Amantha", id: "006" },
-    { name: "Sithija", id: "007" },
-    { name: "Thilini", id: "008" },
-    { name: "Kasuni", id: "009" },
-    { name: "Amantha", id: "010" },
-    { name: "Sithija", id: "011" },
+  const [todos, setTodos] = useState([
+    { name: "Nethmi", key: "001" },
+    { name: "Reshan", key: "002" },
+    { name: "Hasintha", key: "003" },
   ]);
 
-  const clickEvent = (name) => {
-    setName(name);
+  const onItemDelete = (key) => {
+    setTodos((prevTodos)=>{
+      return prevTodos.filter((todo)=>todo.key !== key)
+    })
   };
 
-  const setTextInput = (text) => {
-    setUser(text);
-  };
-
-  const pressHandler = (id) => {
-    console.log(id);
-  };
   return (
     <View style={styles.container}>
-      {/* <Text>Hello, {name}</Text>
-      <Text>Hello, {user2}</Text>
-      <TextInput
-        multiline
-        placeholder={"Enter name"}
-        style={styles.textInput}
-        onChangeText={(text) => setTextInput(text)}
-      />
-      <View style={styles.buttonClick}>
-        <Button onPress={() => clickEvent("Reshan")} title={"click me"} />
-      </View> */}
-
-      <FlatList
+      <Header/>
+     <View style={styles.content}>
+<View style={styles.list}>
+ <FlatList
         // numColumns={2}
-        data={circle}
-        keyExtractor={(item) => item.id}
+        data={todos}
+        keyExtractor={(item) => item.key}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => pressHandler(item.name)}>
-            <Text style={styles.item}>{item.name}</Text>
-          </TouchableOpacity>
+         <TodoItem item={item} pressHandler={onItemDelete}/>
         )}
       />
+</View>
+     </View>
+
+     
     </View>
   );
 }
@@ -72,9 +51,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingTop: 40,
-    paddingHorizontal: 30,
+    // paddingHorizontal: 30,
     // alignItems: "center",
     // justifyContent: "center",
+  },
+  content:{
+    padding:40
+  },
+  list:{
+marginTop:20
   },
   buttonClick: {
     marginTop: 10,
